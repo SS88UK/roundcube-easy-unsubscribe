@@ -1,0 +1,2 @@
+.easy_unsubscribe_link img { height: 13px; margin-left: 10px; vertical-align: middle; opacity: 0.5; transition:all 0.3s ease; }
+.easy_unsubscribe_link:hover img { opacity:1; }
