@@ -16,21 +16,21 @@ class easy_unsubscribe extends rcube_plugin
 		$this->include_stylesheet('easy_unsubscribe.css');
 	}
 	
-    public function storage_init($p)
-    {
-        $p['fetch_headers'] = trim($p['fetch_headers'] . ' ' . strtoupper('List-Unsubscribe'));
-        return $p;
-    }
+	public function storage_init($p)
+	{
+		$p['fetch_headers'] = trim($p['fetch_headers'] . ' ' . strtoupper('List-Unsubscribe'));
+		return $p;
+	}
 	
-    public function message_headers($p)
-    {		
-        if($this->message_headers_done===false)
+	public function message_headers($p)
+	{		
+		if($this->message_headers_done===false)
 		{
 			$this->message_headers_done = true;
-			
+
 			$ListUnsubscribe = $p['headers']->others['list-unsubscribe'];
 			preg_match('/<(.*?)>/', $ListUnsubscribe, $rVal);
-			
+
 			if($rVal[1]!='')
 				$this->unsubscribe_img = '<a class="easy_unsubscribe_link" title="Unsubscribe" href="'.$rVal[1].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
 			else
@@ -40,13 +40,13 @@ class easy_unsubscribe extends rcube_plugin
 					$this->unsubscribe_img = '<a class="easy_unsubscribe_link" title="Unsubscribe" href="'.$rVal[0].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
 			}
 		}
-		
+
 		if(isset($p['output']['subject']))
 		{
 			$p['output']['subject']['value'] = $p['output']['subject']['value'] . $this->unsubscribe_img;
 			$p['output']['subject']['html'] = 1;
 		}
 
-        return $p;
-    }
+		return $p;
+	}
 }
