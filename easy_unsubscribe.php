@@ -2,6 +2,9 @@
 
 class easy_unsubscribe extends rcube_plugin
 {	
+	private $message_headers_done = false;
+	private $unsubscribe_img;
+
 	function init()
 	{
 		$rcmail = rcmail::get_instance();
@@ -21,19 +24,28 @@ class easy_unsubscribe extends rcube_plugin
 	
     public function message_headers($p)
     {		
-		$ListUnsubscribe = $p['headers']->others['list-unsubscribe'];
-		preg_match('/<(.*?)>/', $ListUnsubscribe, $rVal);
-		if($rVal[1]!='')
-			$O = '<a class="easy_unsubscribe_link" title="Unsubscribe" href="'.$rVal[1].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
-		else
+        if($this->message_headers_done===false)
 		{
-			preg_match('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $ListUnsubscribe, $rVal);
-			if($rVal[0]!='')
-				$O = '<a class="easy_unsubscribe_link" title="Unsubscribe" href="'.$rVal[0].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
+			$this->message_headers_done = true;
+			
+			$ListUnsubscribe = $p['headers']->others['list-unsubscribe'];
+			preg_match('/<(.*?)>/', $ListUnsubscribe, $rVal);
+			
+			if($rVal[1]!='')
+				$this->unsubscribe_img = '<a class="easy_unsubscribe_link" title="Unsubscribe" href="'.$rVal[1].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
+			else
+			{
+				preg_match('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $ListUnsubscribe, $rVal);
+				if($rVal[0]!='')
+					$this->unsubscribe_img = '<a class="easy_unsubscribe_link" title="Unsubscribe" href="'.$rVal[0].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
+			}
 		}
-
-        $p['output']['subject']['value'] = $p['output']['subject']['value'] . $O;
-        $p['output']['subject']['html'] = true;
+		
+		if(isset($p['output']['subject']))
+		{
+			$p['output']['subject']['value'] = $p['output']['subject']['value'] . $this->unsubscribe_img;
+			$p['output']['subject']['html'] = 1;
+		}
 
         return $p;
     }
