@@ -29,16 +29,16 @@ class easy_unsubscribe extends rcube_plugin
 			$this->message_headers_done = true;
 
 			$ListUnsubscribe = $p['headers']->others['list-unsubscribe'];
-			preg_match('/<(.*?)>/', $ListUnsubscribe, $rVal);
+			
+			preg_match('%\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))%i', $ListUnsubscribe, $UnsubURL);
+			preg_match('/mailto:(.*?)>/', $ListUnsubscribe, $UnsubEmail);
 
-			if($rVal[1]!='')
-				$this->unsubscribe_img = '<a class="easy_unsubscribe_link" title="Unsubscribe" href="'.$rVal[1].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
-			else
-			{
-				preg_match('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $ListUnsubscribe, $rVal);
-				if($rVal[0]!='')
-					$this->unsubscribe_img = '<a class="easy_unsubscribe_link" title="Unsubscribe" href="'.$rVal[0].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
-			}
+			if(!empty($UnsubURL[0]))
+				$this->unsubscribe_img = '<a class="easy_unsubscribe_link tooltip-right" data-tooltip="Unsubscribe via URL" href="'.$UnsubEmail[0].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
+			
+			if(!empty($UnsubEmail[1]))
+				$this->unsubscribe_img .= '<a class="easy_unsubscribe_link tooltip-right" data-tooltip="Unsubscribe via Email" href="'.$UnsubEmail[1].'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
+
 		}
 
 		if(isset($p['output']['subject']))
