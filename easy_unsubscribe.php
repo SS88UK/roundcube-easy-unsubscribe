@@ -14,6 +14,8 @@ class easy_unsubscribe extends rcube_plugin
 		$this->add_hook('storage_init', array($this, 'storage_init'));
 		
 		$this->include_stylesheet('easy_unsubscribe.css');
+
+		$this->add_texts('localization/');
 	}
 	
 	public function storage_init($p)
@@ -31,7 +33,7 @@ class easy_unsubscribe extends rcube_plugin
 			$ListUnsubscribe = $p['headers']->others['list-unsubscribe'];
 			if ( preg_match_all('/<(.+)>/mU', $ListUnsubscribe, $items, PREG_PATTERN_ORDER) ) {
                                 foreach ( $items[1] as $uri ) {
-                                        $this->unsubscribe_img .= '<a class="easy_unsubscribe_link tooltip-right" data-tooltip="Click to unsubscribe" href="'. htmlentities($uri) .'" target="_blank" onclick="return confirm(\'Are you sure you want to unsubscribe?\');"><img src="plugins/easy_unsubscribe/icon.png" alt="Unsubscribe" /></a>';
+                                        $this->unsubscribe_img .= '<a class="easy_unsubscribe_link tooltip-right" data-tooltip="' . $this->gettext('click_to_unsubscribe') . '" href="'. htmlentities($uri) .'" target="_blank" onclick="return confirm(\'' . $this->gettext('confirm') . '\');"><img src="plugins/easy_unsubscribe/icon.png" alt="' . $this->gettext('unsubscribe') . '" /></a>';
                                 }
                         }
 		}
