@@ -3,7 +3,7 @@ Displays a small icon after the subject line when viewing an email, so you can v
 
 
 ## Demo Visual
-![Demo SS]([https://i.ibb.co/Pr3VbJV/Screenshot-2023-11-29-at-9-09-47-AM.png](https://i.ibb.co/pPVWVtY/Screenshot-2023-11-29-at-12-07-10-PM.png))
+![Demo SS](https://i.ibb.co/pPVWVtY/Screenshot-2023-11-29-at-12-07-10-PM.png)
 
 ## Deployment
 
