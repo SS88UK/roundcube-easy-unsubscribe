@@ -35,6 +35,8 @@ class easy_unsubscribe extends rcube_plugin {
 		if($this->message_headers_done===false) {
 
 			$this->message_headers_done = true;
+			if(!isset($p['headers']->others['list-unsubscribe'])) return $p;
+			
 			$ListUnsubscribe = $p['headers']->others['list-unsubscribe'];
 
 			if (preg_match_all('/<(.+)>/mU', $ListUnsubscribe, $items, PREG_PATTERN_ORDER)) {
