@@ -25,7 +25,7 @@ class easy_unsubscribe extends rcube_plugin {
 	
 	public function storage_init($p) {
 
-		$p['fetch_headers'] = trim($p['fetch_headers'] . ' ' . strtoupper('List-Unsubscribe'));
+		if(isset($p['fetch_headers'])) $p['fetch_headers'] = trim($p['fetch_headers'] . ' ' . strtoupper('List-Unsubscribe'));
 		return $p;
 
 	}
